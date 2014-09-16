@@ -13,15 +13,17 @@ We will control the cd player in the car using an Arduino UNO and Leap Motion.
 - Node.js johnny-five
 
 <h2>How to install the APIs</h2>
-
+```bash
 npm install ws --save
 npm install johnny-five --save
-
+```
 <h2>Quick Guide</h2>
 
 index.js - The main javascipt file. 
-To launch it, do:
-
+To launch it, do this in your command line. 
+```bash
 node index.js
+```
 
-in your command line. 
+
+
