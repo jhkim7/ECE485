@@ -8,22 +8,18 @@ We will control the cd player in the car using an Arduino UNO and Leap Motion.
 <h2>Components</h2>
 - Leap Motion
 - Arduino UNO
-- Download Node.js
-- Node.js websocket
+- Node.js
+- Node.js socket.io
 - Node.js johnny-five
 
-<h2>How to install the APIs</h2>
-```bash
-npm install ws --save
-npm install johnny-five --save
-```
 <h2>Quick Guide</h2>
-
+'dist' fold has all the components needed. 
 index.js - The main javascipt file. 
-To launch it, do this in your command line. 
+To start the server, enter the following command line:
 ```bash
 node index.js
 ```
+Then open up a browser and go to 'http://localhost' 
 
 
 
