@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arduino connectivity test</title>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<div class="container">
+    <h1>Vehicle Gesture Control</h1>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h3>Frame data:</h3>
+            <div id="frameData"></div>
+        </div>
+        <div class="col-md-8">
+            <h3>Hand data:</h3>
+            <div id="handData"></div>
+        </div>
+    </div>
+    <div class="row">
+        <h3 style="padding-left: 15px">Finger(Pointable) data:</h3>
+        <div id="pointableData"></div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="http://js.leapmotion.com/leap-0.6.1.min.js"></script>
+<script>
+
+
+    var socket = io.connect('http://localhost');
+
+    socket.on('news', function (data) {
+        console.log(data);
+    });
+
+    // Store frame for motion functions
+    var previousFrame = null;
+    var paused = false;
+    var pauseOnGesture = false;
+    var controllerOptions = {enableGestures: true};
+    Leap.loop(controllerOptions, function(frame) {
+
+        // Display Frame object data
+        var frameOutput = document.getElementById("frameData");
+
+        var frameString = "Frame ID: " + frame.id  + "<br />"
+                + "Timestamp: " + frame.timestamp + " &micro;s<br />"
+                + "Hands: " + frame.hands.length + "<br />"
+                + "Fingers: " + frame.fingers.length + "<br />"
+                + "Tools: " + frame.tools.length + "<br />"
+                + "Gestures: " + frame.gestures.length + "<br />";
+
+        // Frame motion factors
+        if (previousFrame && previousFrame.valid) {
+            var translation = frame.translation(previousFrame);
+            frameString += "Translation: " + vectorToString(translation) + " mm <br />";
+        }
+        frameString += "<br/><br/><br/>";
+        frameOutput.innerHTML = frameString;
+
+        // Display Hand object data
+        var handOutput = document.getElementById("handData");
+        var handString = "";
+        if (frame.hands.length > 0) {
+            for (var i = 0; i < frame.hands.length; i++) {
+                var hand = frame.hands[i];
+                handString += "<div class='col-md-6'>";
+                handString += "Type: " + hand.type + " hand" + "<br />";
+                handString += "Direction: " + vectorToString(hand.direction, 2) + "<br />";
+                handString += "Palm position: " + vectorToString(hand.palmPosition) + " mm<br />";
+                handString += "Grab strength: " + hand.grabStrength + "<br />";
+                handString += "Confidence: " + hand.confidence + "<br />"; // How well the internal hand model fits the observed data.
+
+                // Hand motion factors
+                if (previousFrame && previousFrame.valid) {
+                    var translation = hand.translation(previousFrame);
+                    handString += "Translation: " + vectorToString(translation) + " mm<br />";
+
+                    var rotationAxis = hand.rotationAxis(previousFrame, 2);
+                    var rotationAngle = hand.rotationAngle(previousFrame);
+                    handString += "Rotation axis: " + vectorToString(rotationAxis) + "<br />";
+                    handString += "Rotation angle: " + rotationAngle.toFixed(2) + " radians<br />";
+
+                    var scaleFactor = hand.scaleFactor(previousFrame);
+                    handString += "Scale factor: " + scaleFactor.toFixed(2) + "<br />";
+                }
+
+                // Grab gesture can be one of the triggers.
+                if (hand.grabStrength >= 0.8) {
+                    handString += "<div style='color:red'>" + "The grab strength is greater than 0.8" + "</div>";
+                    socket.emit('gesture', {grabStrength: true});
+                } else {
+                    socket.emit('gesture', {grabStrength: false});
+                }
+                handString += "</div>";
+            }
+        }
+        else {
+            handString += "No hands";
+        }
+        handOutput.innerHTML = handString;
+
+        // Display Pointable (finger and tool) object data
+        var pointableOutput = document.getElementById("pointableData");
+        var pointableString = "";
+        if (frame.pointables.length > 0) {
+            var fingerTypeMap = ["Thumb", "Index finger", "Middle finger", "Ring finger", "Pinky finger"];
+            for (var i = 0; i < frame.pointables.length; i++) {
+                var pointable = frame.pointables[i];
+                pointableString += "<div class='col-md-2'>"
+                pointableString += "Type: " + fingerTypeMap[pointable.type] + "<br />";
+                pointableString += "Belongs to hand with ID: " + pointable.handId + "<br />";
+                pointableString += "Classified as a finger<br />";
+                pointableString += "Direction: " + vectorToString(pointable.direction, 2) + "<br />";
+                pointableString += "Tip position: " + vectorToString(pointable.tipPosition) + " mm<br />";
+                pointableString += "</div>"
+            }
+        }
+        else {
+            pointableString += "<div class='col-md-12'>No pointables</div>";
+        }
+        pointableOutput.innerHTML = pointableString;
+
+        previousFrame = frame;
+    });
+
+    function vectorToString(vector, digits) {
+        if (typeof digits === "undefined") {
+            digits = 1;
+        }
+        return "(" + vector[0].toFixed(digits) + ", "
+                + vector[1].toFixed(digits) + ", "
+                + vector[2].toFixed(digits) + ")";
+    }
+</script>
+</body>
+</html>
