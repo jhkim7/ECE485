@@ -1,0 +1,105 @@
+<!--Temporary file for some other methods of doing this project-->
+
+
+<script>
+    var controller = new Leap.Controller({enableGestures:true});
+
+
+
+    var totalDistance = 0;
+    var tolerance = 150;
+    var cooloff = 300;
+    var previousFrame = null;
+
+    controller.on('connect', function() {
+        console.log("Successfully connected.");
+    });
+    controller.on('deviceConnected', function() {
+        console.log("A Leap device has been connected.");
+    });
+    controller.on('deviceDisconnected', function() {
+        console.log("A Leap device has been disconnected.");
+    });
+
+
+    var swipe = controller.gesture('swipe');
+    swipe.update(function(g) {
+        if (Math.abs(g.translation()[0]) > tolerance || Math.abs(g.translation()[1]) > tolerance) {
+            var xDir = Math.abs(g.translation()[0]) > tolerance ? (g.translation()[0] > 0 ? -1 : 1) : 0;
+            var yDir = Math.abs(g.translation()[1]) > tolerance ? (g.translation()[1] < 0 ? -1 : 1) : 0;
+
+            if(xDir>0) {
+                console.log("going right");
+                $('#status-icon-2').css("background", "#287E7E");
+            }
+            if(xDir<0) {
+                $('#status-icon-8').css("background", "#2A1DC5");
+                console.log("going left");
+            }
+            if(yDir>0) {
+                $('#status-icon-3').css("background", "#F15822");
+            }
+            if(yDir<0) {
+                $('#status-icon-9').css("background", "#F0DC4C");
+            }
+        }
+    });
+
+    swipe.stop(function(g) {
+        $('#status-icon-1').css("background", "#AFB5BC");
+        $('#status-icon-2').css("background", "#AFB5BC");
+        $('#status-icon-3').css("background", "#AFB5BC");
+        $('#status-icon-4').css("background", "#AFB5BC");
+        $('#status-icon-7').css("background", "#AFB5BC");
+        $('#status-icon-8').css("background", "#AFB5BC");
+        $('#status-icon-9').css("background", "#AFB5BC");
+    });
+
+    var circle = controller.gesture('circle');
+
+
+    circle.update(function(g) {
+
+        var frame = g.frames[0];
+        var pointables = frame.pointables;
+
+        for(var i=0; i<pointables.length; i++) {
+            var pointable = pointables[i];
+            console.log(pointable);
+        }
+
+    });
+
+
+
+
+
+    var frameDisplay = document.getElementById('frameData');
+    setInterval(function(){
+        var frame = controller.frame();
+        var frameOutput = document.getElementById("frameData");
+
+        // Time tracking
+        var seconds = Math.floor((frame.timestamp / 1000000)%60);
+        var minutes = parseInt( (frame.timestamp / 1000000)/ 60 ) % 60;
+        var hours = parseInt( (frame.timestamp / 1000000)/ 3600 ) % 24;
+
+        var frameString = "Frame ID: " + frame.id  + "<br />"
+                + "Timestamp: " + hours +"h " + minutes +"m "+seconds + "s<br />"
+                + "Hands: " + frame.hands.length + "<br />"
+                + "Fingers: " + frame.fingers.length + "<br />"
+                + "Gestures: " + frame.gestures.length + "<br />";
+
+        // Frame motion factors
+        if (previousFrame && previousFrame.valid) {
+            var translation = frame.translation(previousFrame);
+            frameString += "Translation: " + vectorToString(translation) + " mm <br />";
+        }
+        frameString += "<br/><br/><br/><br/>";
+        frameOutput.innerHTML = frameString;
+
+    }, 500);
+
+    controller.connect();
+
+</script>

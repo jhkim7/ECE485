@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vehicle Dashboard Gesture Control</title>
 
-    <!-- Bootstrap -->
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-
-    <!-- Optional theme -->
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <link rel="stylesheet" type="text/css" href="style.css">
 
@@ -106,7 +102,6 @@
             </div>
         </div>
         </div>
-
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -115,13 +110,13 @@
 <script>
 
 
+// The socket set up.
 //    var socket = io.connect('http://localhost');
 //
 //    socket.on('news', function (data) {
 //        console.log(data);
 //    });
 
-// Store frame for motion functions
 var previousFrame = null;
 var paused = false;
 var pauseOnGesture = false;
@@ -133,8 +128,8 @@ Leap.loop(controllerOptions, function(frame) {
 
     // Time tracking
     var seconds = Math.floor((frame.timestamp / 1000000)%60);
-    var minutes = parseInt( (frame.timestamp / 1000000)/ 60 ) % 60;
-    var hours = parseInt( (frame.timestamp / 1000000)/ 3600 ) % 24;
+    var minutes = parseInt((frame.timestamp / 1000000)/ 60) % 60;
+    var hours = parseInt((frame.timestamp / 1000000)/ 3600) % 24;
 
     var frameString = "Frame ID: " + frame.id  + "<br />"
             + "Timestamp: " + hours +"h " + minutes +"m "+seconds + "s<br />"
