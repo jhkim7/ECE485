@@ -5,7 +5,6 @@
 // Team 4 Vehicle Gesture Control
 //
 
-
 // Initialize everything, web server, socket.io, filesystem, johnny-five
 var app = require('http').createServer(handler)
     , io = require('socket.io').listen(app)
@@ -43,7 +42,7 @@ function handler(req, res) {
 io.sockets.on('connection', function (socket) {
     socket.emit('news', { hello: 'world' });
 
-    // If led message received
+    // When the socket receives the 'gesture' message
     socket.on('gesture', function (data) {
         if (board.isReady) {
             if(data.grabStrength){

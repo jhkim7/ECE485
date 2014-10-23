@@ -2,12 +2,15 @@
 
 
 <script>
+
+    // This might be another way to do the project.
+    // All the gestures have states. ex) start - update - stop.
+    // We can utilize the update part of the date and send messages to the socket during that state.
+
     var controller = new Leap.Controller({enableGestures:true});
 
-
-
     var totalDistance = 0;
-    var tolerance = 150;
+    var tolerance = 200;
     var cooloff = 300;
     var previousFrame = null;
 
@@ -21,25 +24,24 @@
         console.log("A Leap device has been disconnected.");
     });
 
-
     var swipe = controller.gesture('swipe');
     swipe.update(function(g) {
         if (Math.abs(g.translation()[0]) > tolerance || Math.abs(g.translation()[1]) > tolerance) {
             var xDir = Math.abs(g.translation()[0]) > tolerance ? (g.translation()[0] > 0 ? -1 : 1) : 0;
             var yDir = Math.abs(g.translation()[1]) > tolerance ? (g.translation()[1] < 0 ? -1 : 1) : 0;
 
-            if(xDir>0) {
+            if(xDir>0 && yDir==0) {
                 console.log("going right");
                 $('#status-icon-2').css("background", "#287E7E");
             }
-            if(xDir<0) {
+            if(xDir<0 && yDir==0) {
                 $('#status-icon-8').css("background", "#2A1DC5");
                 console.log("going left");
             }
-            if(yDir>0) {
+            if(yDir>0 && xDir==0) {
                 $('#status-icon-3').css("background", "#F15822");
             }
-            if(yDir<0) {
+            if(yDir<0 && xDir==0) {
                 $('#status-icon-9').css("background", "#F0DC4C");
             }
         }
@@ -56,25 +58,13 @@
     });
 
     var circle = controller.gesture('circle');
-
-
     circle.update(function(g) {
-
-        var frame = g.frames[0];
-        var pointables = frame.pointables;
-
-        for(var i=0; i<pointables.length; i++) {
-            var pointable = pointables[i];
-            console.log(pointable);
-        }
-
     });
 
-
-
-
-
     var frameDisplay = document.getElementById('frameData');
+
+    // With the setInterval, we can decrease the amount of frame data we collect since we don't need all of them.
+    // This can save space and possibly improve performance.     
     setInterval(function(){
         var frame = controller.frame();
         var frameOutput = document.getElementById("frameData");
@@ -97,7 +87,6 @@
         }
         frameString += "<br/><br/><br/><br/>";
         frameOutput.innerHTML = frameString;
-
     }, 500);
 
     controller.connect();
