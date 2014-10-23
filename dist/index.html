@@ -105,18 +105,18 @@
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<!--<script src="/socket.io/socket.io.js"></script>-->
+<script src="/socket.io/socket.io.js"></script>
 <script src="http://js.leapmotion.com/leap-0.6.1.min.js"></script>
 
 <script>
 
 
 // The socket set up.
-//    var socket = io.connect('http://localhost');
-//
-//    socket.on('news', function (data) {
-//        console.log(data);
-//    });
+    var socket = io.connect('http://localhost');
+
+    socket.on('news', function (data) {
+        console.log(data);
+    });
 
 var previousFrame = null;
 var paused = false;
@@ -182,10 +182,10 @@ Leap.loop(controllerOptions, function(frame) {
             // Send a message to the socket when triggered.
             if (hand.grabStrength == 1) {
                 handString += "<div style='color:red'>" + "The grab strength is greater than 0.8" + "</div>";
-//                    socket.emit('gesture', {grabStrength: true});
+                socket.emit('gesture', {grabStrength: true});
                 $("#status-icon-11").css("background", "#FF2900");
             } else {
-//                    socket.emit('gesture', {grabStrength: false});
+                socket.emit('gesture', {grabStrength: false});
                 $("#status-icon-11").css("background", "#AFB5BC");
             }
             handString += "</div>";
