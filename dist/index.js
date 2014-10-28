@@ -57,6 +57,11 @@ io.sockets.on('connection', function (socket) {
             if(data.swipeRight) {
                 console.log("it came into a swipe right function of the socket");
                 led.toggle();
+                seven.toggle();
+            }
+            if(data.swipeLeft) {
+                eight.toggle();
+                console.log("it came into a swipe left function of the socket");
             }
         }
     });

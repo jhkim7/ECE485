@@ -129,16 +129,18 @@ var inGesture = false;
 var timer = 0;
 
 var right = false;
+var left = false;
 
 Leap.loop(controllerOptions, function(frame) {
 
     if(inGesture) {
-        if(timer<100){
+        if(timer<50){
             timer++;
         } else {
             inGesture = false;
             right = false;
             timer = 0;
+            left = false;
         }
     }
 
@@ -303,6 +305,7 @@ Leap.loop(controllerOptions, function(frame) {
                             swipeDirection = "left";
                             $('#status-icon-8').css("background", "#2A1DC5");
 //                            socket.emit("gesture", {})
+                            swipeLeft();
                         }
                     } else { //vertical
                         if(gesture.direction[1] > 0){
@@ -401,7 +404,12 @@ function swipeRight() {
 }
 
 function swipeLeft() {
-
+    if(!left) {
+        inGesture = true;
+        left = true;
+        console.log( " the right value is :" + right);
+        socket.emit('gesture', {swipeLeft: true});
+    }
 }
 </script>
 </body>
