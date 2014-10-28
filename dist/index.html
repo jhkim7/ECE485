@@ -16,6 +16,9 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+
 </head>
 <body>
 <div class="container">
@@ -112,7 +115,7 @@
 
 
 // The socket set up.
-    var socket = io.connect('http://localhost');
+    var socket = io.connect('http://localhost:8080');
 
     socket.on('news', function (data) {
         console.log(data);
@@ -122,14 +125,23 @@ var previousFrame = null;
 var paused = false;
 var pauseOnGesture = false;
 var controllerOptions = {enableGestures: true};
-var performing = false;
+var inGesture = false;
+var timer = 0;
 
+var right = false;
 
 Leap.loop(controllerOptions, function(frame) {
 
-    if (performing) {
-        return;
+    if(inGesture) {
+        if(timer<100){
+            timer++;
+        } else {
+            inGesture = false;
+            right = false;
+            timer = 0;
+        }
     }
+
 
     // Display Frame object data
     var frameOutput = document.getElementById("frameData");
@@ -284,7 +296,9 @@ Leap.loop(controllerOptions, function(frame) {
                         if(gesture.direction[0] > 0){
                             swipeDirection = "right";
                             $('#status-icon-2').css("background", "#287E7E");
-//                            socket.emit("gesture", {})
+
+                            swipeRight();
+
                         } else {
                             swipeDirection = "left";
                             $('#status-icon-8').css("background", "#2A1DC5");
@@ -301,7 +315,6 @@ Leap.loop(controllerOptions, function(frame) {
 //                            socket.emit("gesture", {})
                         }
                     }
-                    console.log(swipeDirection);
                     break;
                 case "screenTap":
                     console.log("There was a screen tap.");
@@ -331,50 +344,64 @@ Leap.loop(controllerOptions, function(frame) {
     gestureOutput.innerHTML = gestureString;
 
     previousFrame = frame;
+
 });
 
-// Converting the vector to a string function.
-function vectorToString(vector, digits) {
-    if (typeof digits === "undefined") {
-        digits = 1;
+    // Converting the vector to a string function.
+    function vectorToString(vector, digits) {
+        if (typeof digits === "undefined") {
+            digits = 1;
+        }
+        return "(" + vector[0].toFixed(digits) + ", "
+                + vector[1].toFixed(digits) + ", "
+                + vector[2].toFixed(digits) + ")";
     }
-    return "(" + vector[0].toFixed(digits) + ", "
-            + vector[1].toFixed(digits) + ", "
-            + vector[2].toFixed(digits) + ")";
+
+    function togglePause() {
+        paused = !paused;
+        if (paused) {
+            document.getElementById("pause").innerText = "Resume";
+        } else {
+            document.getElementById("pause").innerText = "Pause";
+        }
+    }
+    function pauseForGestures() {
+        if (document.getElementById("pauseOnGesture").checked) {
+            pauseOnGesture = true;
+        } else {
+            pauseOnGesture = false;
+        }
+    }
+
+    var screenToggle = false;
+    function screenTapToggle() {
+        if(screenToggle)
+            $('#status-icon-5').css('background', '#287E7E');
+        else
+            $('#status-icon-5').css('background', '#AFB5BC');
+        screenToggle = !screenToggle;
+    }
+
+    var keyToggle = false;
+    function keyTapToggle() {
+        if(keyToggle)
+            $('#status-icon-6').css('background', '#F15822');
+        else
+            $('#status-icon-6').css('background', '#AFB5BC');
+        keyToggle = !keyToggle;
+    }
+
+function swipeRight() {
+    if(!right) {
+        inGesture = true;
+        right = true;
+        console.log( " the right value is :" + right);
+        socket.emit('gesture', {swipeRight: true});
+    }
 }
 
-function togglePause() {
-    paused = !paused;
-    if (paused) {
-        document.getElementById("pause").innerText = "Resume";
-    } else {
-        document.getElementById("pause").innerText = "Pause";
-    }
-}
-function pauseForGestures() {
-    if (document.getElementById("pauseOnGesture").checked) {
-        pauseOnGesture = true;
-    } else {
-        pauseOnGesture = false;
-    }
-}
+function swipeLeft() {
 
-var screenToggle = false;
-function screenTapToggle() {
-    if(screenToggle)
-        $('#status-icon-5').css('background', '#287E7E');
-    else
-        $('#status-icon-5').css('background', '#AFB5BC');
-    screenToggle = !screenToggle;
-}
-
-var keyToggle = false;
-function keyTapToggle() {
-    if(keyToggle)
-        $('#status-icon-6').css('background', '#F15822');
-    else
-        $('#status-icon-6').css('background', '#AFB5BC');
-    keyToggle = !keyToggle;
 }
 </script>
 </body>

@@ -12,6 +12,8 @@ var app = require('http').createServer(handler)
     , five = require("johnny-five"),
     board, servo, led, sensor;
 
+var seven, eight;
+
 board = new five.Board();
 
 // On board ready
@@ -19,11 +21,13 @@ board = new five.Board();
 board.on("ready", function () {
     led = new five.Led(13);
     led.off();
+    seven = new five.Led(7);
+    eight = new five.Led(8);
     console.log("The Board is ready.");
 });
 
 // Make web server listen on port 80
-app.listen(80);
+app.listen(8080);
 
 // Handle web server
 function handler(req, res) {
@@ -49,6 +53,14 @@ io.sockets.on('connection', function (socket) {
                 led.on();
             } else led.off();
         }
+        if(board.isReady) {
+            if(data.swipeRight) {
+                console.log("it came into a swipe right function of the socket");
+                led.toggle();
+            }
+        }
     });
+
+    console.log("connected to socket");
 
 });

@@ -25,6 +25,8 @@
     });
 
     var swipe = controller.gesture('swipe');
+    var circle = controller.gesture('circle');
+
     swipe.update(function(g) {
         if (Math.abs(g.translation()[0]) > tolerance || Math.abs(g.translation()[1]) > tolerance) {
             var xDir = Math.abs(g.translation()[0]) > tolerance ? (g.translation()[0] > 0 ? -1 : 1) : 0;
@@ -40,9 +42,11 @@
             }
             if(yDir>0 && xDir==0) {
                 $('#status-icon-3').css("background", "#F15822");
+                console.log("going up");
             }
             if(yDir<0 && xDir==0) {
                 $('#status-icon-9').css("background", "#F0DC4C");
+                console.log("going down");
             }
         }
     });
@@ -57,8 +61,8 @@
         $('#status-icon-9').css("background", "#AFB5BC");
     });
 
-    var circle = controller.gesture('circle');
     circle.update(function(g) {
+
     });
 
     var frameDisplay = document.getElementById('frameData');
