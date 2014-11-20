@@ -44,45 +44,45 @@
     padding: 20px 20px 20px 30px;
 }
 .status {
-    border-left: 3px solid;
+    border: 3px solid;
     height: 40px;
     margin-bottom: 10px;
 }
 #status-1 {
-    border-left-color: #91C46B;
+    border-color: #91C46B;
 }
 #status-2 {
-    border-left-color: #287E7E;
+    border-color: #287E7E;
 }
 #status-3 {
-    border-left-color: #F15822;
+    border-color: #F15822;
 }
 #status-4 {
-    border-left-color: #91C46B;
+    border-color: #3ECC88;
 }
 #status-5 {
-    border-left-color: #287E7E;
+    border-color: #C15C10;
 }
 #status-6 {
-    border-left-color: #F15822;
+    border-color: #287E7E;
 }
 #status-7 {
-    border-left-color: #7C40B3;
+    border-color: #7C40B3;
 }
 #status-8 {
-    border-left-color: #2A1DC5;
+    border-color: #2A1DC5;
 }
 #status-9 {
-    border-left-color: #F0DC4C;
+    border-color: #F0DC4C;
 }
 #status-10 {
-
+    border-color: #6C757E;
 }
 #status-11 {
-    border-left-color: #FF2900;
+    border-color: #39a3c2;
 }
 #status-12 {
-    border-left-color: #3ECC88;
+    border-color: #FF2900;
 }
 .status-title {
     color: #5D646C;
