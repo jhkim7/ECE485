@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Vehicle Dashboard Gesture Control</title>
 
-    <link rel="stylesheet" href="bootstrap.min.css">
-    <link rel="stylesheet" href="bootstrap-theme.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -18,492 +19,460 @@
     <![endif]-->
 </head>
 <body>
-    <div >
-        <div id="header" class="row">
-            <div class="col-md-2 col-xs-4" id="images">
-                <img src="block-s.png" height="48" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <img src="CorporateLogoSmall.png" height="50" />
-            </div>
-            <div class="col-md-10 col-xs-8" id="header-title">Project 4: Vehicle Dashboard Gesture Control</div>
+
+    <div id="header">
+        <div id="header-title" class="col-lg-11">
+            Project 4: Vehicle Dashboard Gesture Control
         </div>
-        <div class="row">
-            <div class="col-md-8 col-xs-6" id="title">
-                Dashboard
-            </div>
-            <div class="col-md-4 col-xs-6" id="reload">
-                <input type="button" value="Reload Page" onclick="window.location.reload()">
+        <div class="col-lg-1">
+            <i id="refresh" class="fa fa-refresh" onclick="window.location.reload()"></i>
+        </div>
+        <div class="col-lg-12" id="divider-1"></div>
+    </div>
+
+
+
+    <div class="data-container col-lg-4">
+        <div class="data-title">FRAME DATA</div>
+        <div class="pointable data" id="frameData"></div>
+
+
+        <div class="data-title">GESTURE DATA</div>
+        <div class="data" id="gestureData"></div>
+        <div class="data-border">
+            <div class="data-title">ARDUINO CONSOLE</div>
+            <div id="console"></div>
+        </div>
+
+    </div>
+
+    <div class="col-lg-4 dashboard">
+
+        <div class="data-title">GESTURE RECOGNITION</div>
+
+        <div class="media-container">
+            <div class="gesture-title">MEDIA</div>
+            <div class="media-icons">
+                <div class="media-icon col-lg-4" id="status-10">
+                    <!--Point Left:<br />Seek Down/Previous Track-->
+                    <i class="fa fa-backward pull-right"></i>
+                </div>
+                <div class="media-icon col-lg-4 " id="status-5">
+                    SOURCE
+                </div>
+                <div class="media-icon col-lg-4" id="status-4">
+                    <!--Point Right:<br />Seek Up/Next Track-->
+                    <i class="fa fa-forward pull-left"></i>
+                </div>
+
+                <div class="media-icon col-lg-6" id="status-7">
+                    <i class="fa fa-volume-down pull-right vol-icon"></i>
+                </div>
+                <div class="media-icon col-lg-6" id="status-1">
+                    <i class="fa fa-volume-up pull-left vol-icon"></i>
+                </div>
             </div>
         </div>
 
 
-        <div class="data-triggers">
-            <div class="row">
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-1">Clockwise Circle:<br />Volume Up</div>
-                        <!--<div class="status-icon" id="status-icon-1"></div>-->
-                    </div>
+        <div class="light-container">
+            <div class="gesture-title">CAR LIGHTS</div>
+
+            <div class="light-icons">
+                <div class="car-icon col-lg-6" id="status-8">
+                    <i class="fa fa-arrow-left"></i>
                 </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-2">Swipe Right:<br />Seek Up/Next Track</div>
-                        <!--<div class="status-icon" id="status-icon-2"></div>-->
-                    </div>
+                <div class="car-icon col-lg-6" id="status-2">
+                    <i class="fa fa-arrow-right"></i>
                 </div>
-                <div class="col-md-2 col-sm-3  col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-3">Swipe Up:<br />Headlights On/High</div>
-                        <!--<div class="status-icon" id="status-icon-3"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-4">Point Right:<br />Right Turn Signal</div>
-                        <!--<div class="status-icon" id="status-icon-4"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-5">Screen Tap:<br />Radio Source</div>
-                        <!--<div class="status-icon" id="status-icon-5"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-6">Key Tap:<br />(No Function)</div>
-                        <!--<div class="status-icon" id="status-icon-6"></div>-->
-                    </div>
+
+                <div class="car-label col-lg-6" id="status-9">Headlights Low/Off</div>
+                <div class="car-label col-lg-6" id="status-3">Headlights On/High</div>
+
+                <div class="car-label col-lg-12" id="status-11">Dimmer Control</div>
+                <div class="car-label col-lg-12" id="status-12">N.C. State<br />Go Wolfpack!</div>
+
+                <div id="sound">
+                    <audio controls loop id="audio" style="display:none">
+                        <source src="resources/NC_State__Hey_Cheer.mp3" type="audio/mpeg" />
+                        Your browser doesn't support this audio format.
+                    </audio>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-7">Counterclockwise Circle:<br />Volume Down</div>
-                        <!--<div class="status-icon" id="status-icon-7"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-8">Swipe Left:<br />Seek Down/Previous Track</div>
-                        <!--<div class="status-icon" id="status-icon-8"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-9">Swipe Down:<br />Headlights Low/Off</div>
-                        <!--<div class="status-icon" id="status-icon-9"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-10">Point Left:<br />Left Turn Signal</div>
-                        <!--<div class="status-icon" id="status-icon-10"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-11">Grab &amp; Slide:<br />Dimmer Control</div>
-                        <!--<div class="status-icon" id="status-icon-11"></div>-->
-                    </div>
-                </div>
-                <div class="col-md-2 col-sm-3 col-xs-4">
-                    <div class="status">
-                        <div class="status-title" id="status-12">N.C. State<br />Go Wolfpack!</div>
-                        <!--<div class="status-icon" id="status-icon-12"></div>-->
-                        <div id="sound">
-                            <audio controls loop id="audio" style="display:none">
-                                <source src="NC_State__Hey_Cheer.mp3" type="audio/mpeg" />
-                                Your browser doesn't support this audio format.
-                            </audio>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            
         </div>
-        <div class="data-container">
-            <div class="row">
-                <div class="col-md-2">
-                    <div class="data-title">Frame data:</div>
-                    <div id="frameData"></div>
-                </div>
-                <div class="col-md-5">
-                    <div class="data-title">Hand data:</div>
-                    <div id="handData"></div>
-                </div>
-                <div class="col-md-5">
-                    <div class="data-title">Arduino Console:</div>
-                    <div id="console"><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="data-title">Finger data: </div>
-                    <div id="pointableData"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="data-title">Gesture Data: </div>
-                    <div id="gestureData"></div>
-                </div>
-            </div>
+
+    </div>
+
+    <div class="data-container col-lg-4">
+        <div class="data-border col-lg-12">
+            <div class="data-title">HAND DATA</div>
+            <div class="data" id="handData"></div>
+        </div>
+        <div class="data-border col-lg-12">
+            <div class="data-title">FINGER DATA</div>
+            <div class="data" id="pointableData"></div>
         </div>
     </div>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
-    <!--<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
-    <!--<script src="/socket.io/socket.io.js"></script>-->
-    <script src="node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js"></script>
-    <!--<script src="node_modules/socket.io/lib/socket.js"></script>-->
-
-    <!--<script src="http://js.leapmotion.com/leap-0.6.1.min.js"></script>-->
-
-    <script src="jquery.min.js"></script>
-    <script src="bootstrap.min.js"></script>
-    <script src="leap-0.6.1.min.js"></script>
-
-    <script>
 
 
-        // The socket set up.
-        var socket = io.connect('http://localhost:8080');
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>-->
+<!--<script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>-->
+<script src="/socket.io/socket.io.js"></script>
+<!--<script src="http://js.leapmotion.com/leap-0.6.1.min.js"></script>-->
+<script src="node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js"></script>
 
-        socket.on('news', function (data) {
-            console.log(data);
-        });
+<script src="javascript/jquery.min.js"></script>
+<script src="javascript/bootstrap.min.js"></script>
+<script src="javascript/leap-0.6.1.min.js"></script>
 
-        socket.on('console', function (data) {
-            var console = document.getElementById("console");
-            consoleString = consoleString.substring(consoleString.indexOf("<br/>") + 5) + "<br/>" + data.text;
-            console.innerHTML = consoleString;
-        });
+<script>
 
-        var audio = document.getElementById('audio');
-        audio.pause();
 
-        var controllerOptions = { enableGestures: true };
-        var previousFrame = null;
-        var inGesture = false;
-        var inDebounce = false;
-        var turnGesture = false;
-        var timer = 10;
-        var turnTimer = 300;
-        var inGrabState = false;
+// The socket set up.
+var socket = io.connect('http://localhost:8080');
 
-        var consoleString = "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
+socket.on('news', function (data) {
+    console.log(data);
+});
 
-        Leap.loop(controllerOptions, function (frame) {
-            if (inDebounce) { // Screen Tap debounce, allows wire to be high long enough to read.
-                if (timer-- <= 0) {
-                    timer = 10;
-                    inDebounce = false;
-                    inGesture = false;
-                    socket.emit('gesture', { gestureOff: true });
-                }
-            } else {
-                $('#status-5').css("border-color", "#9698A9");
-                $('#status-6').css("border-color", "#9698A9");
-            }
-            if (inGesture && frame.gestures.length == 0) { // Wait for gesture data to be flushed before tracking again.
-                inGesture = false;
-                socket.emit('gesture', { gestureOff: true });
-            }
+socket.on('console', writeToConsole);
 
-            if (turnGesture) { // Separate Turn Signal debounce, allows other gestures to continue to work.
-                if (turnTimer-- <= 0) {
-                    turnTimer = 300;
-                    turnGesture = false;
-                    socket.emit('gesture', { turnOff: true }); //#5D646C
-                    $('#status-4').css("border-color", "#9698A9");
-                    $('#status-10').css("border-color", "#9698A9");
-                }
-            }
+var audio = document.getElementById('audio');
+audio.pause();
+
+var controllerOptions = { enableGestures: true };
+var previousFrame = null;
+var inGesture = false;
+var inCircle = false;
+var inPoint = false;
+var inDebounce = false;
+var turnGesture = false;
+var timer = 10;
+var turnTimer = 300;
+var wolfTimer = 2700;
+var inGrabState = false;
+
+var consoleString = "";
+
+Leap.loop(controllerOptions, function (frame) {
+    if (inDebounce) { // Screen Tap/Swipe debounce, allows wire to be high long enough to read.
+        if (timer-- <= 0) {
+            timer = 10; // Default
+            inDebounce = false;
+            inGesture = false;
+            socket.emit('gesture', { gestureOff: true });
+        }
+    } else {
+        $('#status-5').css("color", "#5D646C");
+        $('#status-6').css("color", "#5D646C");
+    }
+    if (inCircle && frame.gestures.length == 0) { // Wait for circle gesture data to be flushed before tracking again.
+        inGesture = false;
+        inCircle = false;
+        socket.emit('gesture', { gestureOff: true });
+    }
+    if (turnGesture) { // Separate Turn Signal debounce, allows other gestures to continue to work.
+        if (turnTimer-- <= 0) {
+            turnTimer = 300;
+            turnGesture = false;
+            socket.emit('gesture', { turnOff: true });
+        }
+    }
 
 // Display Frame object data
-            var frameOutput = document.getElementById("frameData");
+    var frameOutput = document.getElementById("frameData");
 
-            // Time tracking
-            var seconds = Math.floor((frame.timestamp / 1000000) % 60);
-            var minutes = parseInt((frame.timestamp / 1000000) / 60) % 60;
-            var hours = parseInt((frame.timestamp / 1000000) / 3600) % 24;
+    // Time tracking
+    var seconds = Math.floor((frame.timestamp / 1000000) % 60);
+    var minutes = parseInt((frame.timestamp / 1000000) / 60) % 60;
+    var hours = parseInt((frame.timestamp / 1000000) / 3600) % 24;
 
-            var frameString = "Frame ID: " + frame.id + "<br />"
-                    + "Timestamp: " + hours + "h " + minutes + "m " + seconds + "s<br />"
-                    + "Hands: " + frame.hands.length + "<br />"
-                    + "Fingers: " + frame.fingers.length + "<br />"
-                    + "Gestures: " + frame.gestures.length + "<br />";
+    var frameString = "Frame ID: " + frame.id + " | Timestamp: " + hours + "h " + minutes + "m " + seconds + "s | Hands: " + frame.hands.length + " | Fingers: " + frame.fingers.length + " | Gestures: " + frame.gestures.length;
+    frameOutput.innerHTML = frameString;
 
-            // Frame motion factors
-            if (previousFrame && previousFrame.valid) {
-                var translation = frame.translation(previousFrame);
-            }
-            frameString += "<br/><br/><br/><br/><br/><br/>";
-            frameOutput.innerHTML = frameString;
+    // Frame motion factors
+    if (previousFrame && previousFrame.valid) {
+        var translation = frame.translation(previousFrame);
+    }
+
 
 // Display Hand object data
-            var handOutput = document.getElementById("handData");
-            var handString = "";
-            if (frame.hands.length > 0) {
-                for (var i = 0; i < 2; i++) {
-                    handString += "<div class='col-md-6'><div class='pointable'>";
-                    if (i < frame.hands.length) {
-                        var hand = frame.hands[i];
-                        handString += "ID: " + hand.id + "<br />";
-                        handString += "Type: " + hand.type + " hand" + "<br />";
-                        handString += "Direction: " + vectorToString(hand.direction, 2) + "<br />";
-                        handString += "Palm position: " + vectorToString(hand.palmPosition, 0) + " mm<br />";
-                        // Hand motion factors
-                        if (previousFrame && previousFrame.valid) {
-                            var translation = hand.translation(previousFrame);
-                            handString += "Translation: " + vectorToString(translation, 0) + " mm<br />";
-                            var rotationAxis = hand.rotationAxis(previousFrame, 2);
-                            var rotationAngle = hand.rotationAngle(previousFrame);
-                            handString += "Rotation axis: " + vectorToString(rotationAxis) + "<br />";
-                            handString += "Rotation angle: " + rotationAngle.toFixed(2) + " radians<br />";
-                            var scaleFactor = hand.scaleFactor(previousFrame);
-                            handString += "Scale factor: " + scaleFactor.toFixed(2) + "<br />";
-                        }
-                        handString += "Grab strength: " + hand.grabStrength + "<br />";
-                        handString += "Pinch strength: " + hand.pinchStrength + "<br />";
-                        handString += "Confidence: " + hand.confidence + "<br />"; // How well the internal hand model fits the observed data.
+    var handOutput = document.getElementById("handData");
+    var handString = "";
+    if (frame.hands.length > 0) {
+        for (var i = 0; i < 2; i++) {
+            handString += "<div class='custom-half'><div class='pointable hand-data'>";
+            if (i < frame.hands.length) {
+                var hand = frame.hands[i];
+                handString += "ID: " + hand.id + "<br />";
+                handString += "Type: " + hand.type + " hand" + "<br />";
+                handString += "Direction: " + vectorToString(hand.direction, 2) + "<br />";
+                handString += "Palm Position: " + vectorToString(hand.palmPosition, 0) + "<br />";
+                // Hand motion factors
+                if (previousFrame && previousFrame.valid) {
+                    var translation = hand.translation(previousFrame);
+                    handString += "Translation: " + vectorToString(translation, 0) + "<br />";
+                    var rotationAxis = hand.rotationAxis(previousFrame, 2);
+                    var rotationAngle = hand.rotationAngle(previousFrame);
+                    handString += "Rotation Axis: " + vectorToString(rotationAxis) + "<br />";
+                    handString += "Rotation Angle: " + rotationAngle.toFixed(2) + " radians<br />";
+                    var scaleFactor = hand.scaleFactor(previousFrame);
+                }
+                handString += "Grab Strength: " + hand.grabStrength + "<br />";
+                handString += "Pinch Strength: " + hand.pinchStrength + "<br />";
 
-                        // Pointing Gestures
-                        if ((hand.direction[0] > .6) && hand.indexFinger.extended && (hand.pinchStrength >= .6 || hand.grabStrength >= .5)) { // Right Point
-                            $('#status-4').css("border-color", "#CC0000");
-                            if (hand.type == "right" && frame.gestures.length <= 0 && !turnGesture) {
-                                inGesture = true;
-                                turnGesture = true;
-                                inDebounce = true;
-                                socket.emit('gesture', { turnRight: true });
-                            }
-                        } else if ((hand.direction[0] < -.4) && hand.indexFinger.extended && (hand.pinchStrength >= .6 || hand.grabStrength >= .5)) { // Left Point
-                            $('#status-10').css("border-color", "#CC0000");
-                            if (hand.type == "right" && frame.gestures.length <= 0 && !turnGesture) {
-                                inGesture = true;
-                                turnGesture = true;
-                                inDebounce = true;
-                                socket.emit('gesture', { turnLeft: true });
-                            }
-                        } else {
-                            $('#status-4').css("border-color", "#9698A9");
-                            $('#status-10').css("border-color", "#9698A9");
-                        }
-
-                        // Wolf Ears
-                        if ((hand.pinchStrength > .6) && hand.indexFinger.extended && hand.pinky.extended) {
-                            $("#status-12").css("border-color", "#CC0000");
-                            if (audio.paused)
-                                audio.play();
-                        } else {
-                            $("#status-12").css("border-color", "#9698A9");
-                            //if (!audio.paused) {
-                            audio.pause();
-                            audio.currentTime = 0;
-                            //}
-                        }
-
-                        // Send a message to the socket when grab triggered.
-                        if (hand.grabStrength == 1) {
-                            //handString += "<div style='color:red'>" + "The grab strength is greater than 0.8" + "</div>";
-                            $("#status-11").css("border-color", "#CC0000");
-                            if (inGrabState) {
-                                if (hand.type == "right" && (Math.abs(translation[0]) < 1 || Math.abs(translation[2]) < 1))
-                                    socket.emit('dimmer', { dimmerChange: translation[1].toFixed(0) });
-                            } else {
-                                inGrabState = true;
-                                if (hand.type == "right")
-                                    socket.emit('gesture', { grabState: true });
-                            }
-                        } else {
-                            $("#status-11").css("border-color", "#9698A9");
-                            if (inGrabState && hand.type == "right")
-                                socket.emit('gesture', { grabOff: true });
-                            inGrabState = false;
-                        }
-                    } else {
-                        handString += "<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
+                // Pointing Gestures
+                if ((hand.indexFinger.direction[0] > .6) && isPointing(hand)) { // Right Point
+                    $('#status-4').css("color", "#3ba9df");
+                    if (!inGesture && !inDebounce) {
+                        inGesture = true;
+                        inPoint = true;
+                        socket.emit('gesture', { pointRight: true });
                     }
-                    handString += "</div></div>";
+                } else if ((hand.indexFinger.direction[0] < -.6) && isPointing(hand)) { // Left Point
+                    $('#status-10').css("color", "#3ba9df");
+                    if (!inGesture && !inDebounce) {
+                        inGesture = true;
+                        inPoint = true;
+                        socket.emit('gesture', { pointLeft: true });
+                    }
+                } else {
+                    $('#status-4').css("color", "#5D646C");
+                    $('#status-10').css("color", "#5D646C");
+                    if (inPoint) {
+                        inPoint = false;
+                        inGesture = false;
+                        socket.emit('gesture', { gestureOff: true });
+                    }
+                }
+
+                // Wolf Ears
+                if ((hand.pinchStrength > .6) && hand.indexFinger.extended && hand.pinky.extended) {
+                    $("#status-12").css("color", "#3ba9df");
+                    if (audio.paused)
+                        audio.play();
+                    else
+                    if (wolfTimer-- == 0)
+                        window.location.reload();
+                } else {
+                    $("#status-12").css("color", "#5D646C");
+                    //if (!audio.paused) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    //}
+                }
+
+                // Send a message to the socket when grab triggered.
+                if (hand.grabStrength == 1) {
+                    //handString += "<div style='color:red'>" + "The grab strength is greater than 0.8" + "</div>";
+                    $("#status-11").css("color", "#3ba9df");
+                    if (inGrabState) {
+                        if (hand.type == "right" && (Math.abs(translation[0]) < 1 || Math.abs(translation[2]) < 1))
+                            socket.emit('dimmer', { dimmerChange: translation[1].toFixed(0) });
+                    } else {
+                        inGrabState = true;
+                        if (hand.type == "right")
+                            socket.emit('gesture', { grabState: true });
+                    }
+                } else {
+                    $("#status-11").css("color", "#5D646C");
+                    if (inGrabState && hand.type == "right")
+                        socket.emit('gesture', { grabOff: true });
+                    inGrabState = false;
                 }
             } else {
-                handString += "<div class='col-md-6'><div class='pointable'>No hands<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></div></div></div><div class='col-md-6'><div class='pointable'><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></div></div>";
-                $("#status-11").css("border-color", "#9698A9");
+                handString += "<br/><br/><br/><br/><br/><br/><br/><br/><br/>";
             }
-            handOutput.innerHTML = handString;
+            handString += "</div></div>";
+        }
+    } else {
+        handString += "<div class=''><div class='pointable hand-data'>No Hands</div></div>";
+        $("#status-11").css("border-color", "#3ba9df");
+    }
+    handOutput.innerHTML = handString;
 
 // Display Pointable (finger and tool) object data
-            var pointableOutput = document.getElementById("pointableData");
-            var pointableString = "";
-            if (frame.pointables.length > 0) {
-                var fingerTypeMap = ["Thumb", "Index finger", "Middle finger", "Ring finger", "Pinky finger"];
-                for (var i = 0; i < 10; i++) {
-                    pointableString += "<div class='col-md-2'><div class='pointable'>";
-                    if (i < frame.pointables.length) {
-                        var pointable = frame.pointables[i];
-                        pointableString += "Type: " + fingerTypeMap[pointable.type] + "<br />";
-                        pointableString += "Belongs to hand with ID: " + pointable.handId + "<br />";
-                        pointableString += "Classified as a finger<br />";
-                        pointableString += "Direction: " + vectorToString(pointable.direction, 2) + "<br />";
-                        pointableString += "Tip position: " + vectorToString(pointable.tipPosition, 0) + " mm<br />";
-                        pointableString += "Time visible: " + pointable.timeVisible + "<br />";
-                    } else {
-                        pointableString += "<br/><br/><br/><br/><br/><br/>";
-                    }
-                    pointableString += "</div></div>";
-                    if (i == 4) pointableString += "<div class='col-md-2'><br/><br/><br/><br/><br/><br/><br/></div>";
-                }
+    var pointableOutput = document.getElementById("pointableData");
+    var pointableString = "<div class='custom-half'>";
+    if (frame.pointables.length > 0) {
+        var fingerTypeMap = ["Thumb", "Index Finger", "Middle Finger", "Ring Finger", "Pinky Finger"];
+        for (var i = 0; i < 10; i++) {
+            pointableString += "<div class='pointable'>";
+            if (i < frame.pointables.length) {
+                var pointable = frame.pointables[i];
+                pointableString += "Type: " + fingerTypeMap[pointable.type] + "<br />";
+                pointableString += "ID: " + pointable.id + "<br />";
+                pointableString += "Direction: " + vectorToString(pointable.direction, 2) + "<br />";
+                pointableString += "Tip Position: " + vectorToString(pointable.tipPosition, 0) + "<br />";
+                if (pointable.extended)
+                    pointableString += "Is Extended<br/>";
+                else
+                    pointableString += "Not Extended<br/>"
             } else {
-                pointableString += "<div class='col-md-2'><div class='pointable'>No fingers<br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='md-col-2'><br/><br/><br/><br/><br/><br/><br/></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div><div class='col-md-2'><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div>";
+                pointableString += "<br/><br/><br/><br/><br/>";
             }
-            pointableOutput.innerHTML = pointableString;
+            pointableString += "</div>";
+            if (i == 4) pointableString += "</div><div class='custom-half'>";
+        }
+        pointableString += "</div>";
+    } else {
+        pointableString += "<div class='pointable'>No Fingers<br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div></div>"
+                + "<div class='custom-half'><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div></div>";
+    }
+    pointableOutput.innerHTML = pointableString;
 
 // Display Gesture object data
-            var gestureOutput = document.getElementById("gestureData");
-            var gestureString = "";
-            if (frame.gestures.length > 0) {
-                for (var i = 0; i < 10; i++) {
-                    if (i < frame.gestures.length) {
-                        var gesture = frame.gestures[i];
-                        gestureString += "Gesture ID: " + gesture.id + ", "
-                                + "type: " + gesture.type + ", "
-                                + "state: " + gesture.state + ", "
-                                + "hand IDs: " + gesture.handIds.join(", ") + ", "
-                                + "pointable IDs: " + gesture.pointableIds.join(", ") + ", "
-                                + "duration: " + gesture.duration + " &micro;s, ";
+    var gestureOutput = document.getElementById("gestureData");
+    var gestureString = "<div class='pointable'>";
+    if (frame.gestures.length > 0) {
+        for (var i = 0; i < 20; i++) {
+            if (i < frame.gestures.length) {
+                var gesture = frame.gestures[i];
+                gestureString += "ID: " + gesture.id + ", "
+                        + "Type: " + gesture.type + ", "
+                        + "State: " + gesture.state + ", "
+                        + "Hand: " + gesture.handIds.join(", ") + ", "
+                        + "Finger: " + gesture.pointableIds.join(", ") + ", "
+                        + "Duration: " + (gesture.duration/1000000).toFixed(2) + " s, ";
 
-                        switch (gesture.type) {
-                            case "circle":
-                                gestureString += "center: " + vectorToString(gesture.center) + " mm, "
-                                        + "normal: " + vectorToString(gesture.normal, 2) + ", "
-                                        + "radius: " + gesture.radius.toFixed(1) + " mm, "
-                                        + "progress: " + gesture.progress.toFixed(2) + " rotations";
+                switch (gesture.type) {
+                    case "circle":
+                        gestureString += "Direction: ";
 
-                                // Calculate the direction of the circle.
-                                var clockwise = false;
-                                var pointableID = gesture.pointableIds[0];
-                                var direction = frame.pointable(pointableID).direction;
-                                var dotProduct = Leap.vec3.dot(direction, gesture.normal);
-                                if (dotProduct > 0) clockwise = true;
+                        // Calculate the direction of the circle.
+                        var clockwise = false;
+                        if (frame.pointables.length == 0) break;
+                        var pointableID = gesture.pointableIds[0];
+                        var direction = frame.pointable(pointableID).direction;
+                        var dotProduct = Leap.vec3.dot(direction, gesture.normal);
+                        if (dotProduct > 0) clockwise = true;
+                        // Count how many completed circles the user drew.
+                        var circleProgress = gesture.progress;
+                        var completeCircles = Math.floor(circleProgress);
 
-                                // Count how many completed circles the user drew.
-                                var circleProgress = gesture.progress;
-                                var completeCircles = Math.floor(circleProgress);
-
-                                // Send message to the socket depending on the direction of the circle and circle counts.
-                                if (clockwise) {
-                                    $('#status-1').css("border-color", "#CC0000");
-                                    if (!inGesture) {
-                                        if (gesture.progress >= 1 && gesture.progress < 2) {
-                                            inGesture = true;
-                                            socket.emit('gesture', { cwCircle: true });
-                                        }
-                                    }
-                                } else {
-                                    $('#status-7').css("border-color", "#CC0000");
-                                    if (!inGesture) {
-
-                                        if (gesture.progress >= 1 && gesture.progress < 2) {
-                                            inGesture = true;
-                                            socket.emit('gesture', { ccwCircle: true });
-                                        }
-                                    }
-                                }
-                                break;
-                            case "swipe":
-                                gestureString += "start position: " + vectorToString(gesture.startPosition) + " mm, "
-                                        + "current position: " + vectorToString(gesture.position) + " mm, "
-                                        + "direction: " + vectorToString(gesture.direction, 1) + ", "
-                                        + "speed: " + gesture.speed.toFixed(1) + " mm/s";
-
-                                //Classify swipe as either horizontal or vertical
-                                var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
-                                //Classify as right-left or up-down
-                                if (isHorizontal) {
-                                    if (gesture.direction[0] > 0) { // Right
-                                        $('#status-2').css("border-color", "#CC0000");
-                                        if (!inGesture) {
-                                            if (gesture.state == "start") {
-                                                inGesture = true;
-                                                socket.emit('gesture', { swipeRight: true });
-                                            }
-                                        }
-                                    } else { // Left
-                                        $('#status-8').css("border-color", "#CC0000");
-                                        if (!inGesture) {
-                                            if (gesture.state == "start") {
-                                                inGesture = true;
-                                                socket.emit('gesture', { swipeLeft: true });
-                                            }
-                                        }
-                                    }
-                                } else { //vertical
-                                    if (gesture.direction[1] > 0) { // Up
-                                        $('#status-3').css("border-color", "#CC0000");
-                                        if (!inGesture && hand.type == "right") {
-                                            if (gesture.state == "start") {
-                                                inGesture = true;
-                                                socket.emit('gesture', { swipeUp: true });
-                                            }
-                                        }
-                                    } else { // Down
-                                        swipeDirection = "down";
-                                        $('#status-9').css("border-color", "#CC0000");
-                                        if (!inGesture && hand.type == "right") {
-                                            if (gesture.state == "start") {
-                                                inGesture = true;
-                                                socket.emit('gesture', { swipeDown: true });
-                                            }
-                                        }
-                                    }
-                                }
-                                break;
-                            case "screenTap":
-                                $('#status-5').css("border-color", "#CC0000");
-                                gestureString += "direction: " + vectorToString(gesture.direction, 1);
-                                if (!inGesture) {
+                        // Send message to the socket depending on the direction of the circle and circle counts.
+                        if (clockwise) {
+                            gestureString += "CW, ";
+                            $('#status-1').css("color", "#5059C2");
+                            if (!inGesture) {
+                                if (gesture.progress >= 1 && gesture.progress < 2) {
                                     inGesture = true;
-                                    socket.emit('gesture', { screenTap: true });
-                                    inDebounce = true;
+                                    inCircle = true;
+                                    socket.emit('gesture', { cwCircle: true });
                                 }
-                                break;
-                            case "keyTap":
-                                $('#status-6').css("border-color", "#CC0000");
-                                gestureString += "position: " + vectorToString(gesture.position) + " mm";
-                                if (!inGesture) {
+                            }
+                        } else {
+                            gestureString += "CCW, ";
+                            $('#status-7').css("color", "#5059C2");
+                            if (!inGesture) {
+                                if (gesture.progress >= 1 && gesture.progress < 2) {
                                     inGesture = true;
-                                    socket.emit('gesture', { keyTap: true });
-                                    inDebounce = true;
+                                    inCircle = true;
+                                    socket.emit('gesture', { ccwCircle: true });
                                 }
-                                break;
-                            default:
-                                gestureString += "unkown gesture type";
+                            }
                         }
-                    }
-                    gestureString += "<br />";
+                        gestureString += "Rotations: " + gesture.progress.toFixed(2);
+                        break;
+                    case "swipe":
+                        gestureString += "Direction: ";
+                        //Classify swipe as either horizontal or vertical
+                        var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+                        //Classify as right-left or up-down
+                        if (isHorizontal) {
+                            if (gesture.direction[0] > 0) { // Right
+                                gestureString += "Right";
+                                $('#status-2').css("color", "#5059C2");
+                                if (!inDebounce  && !turnGesture && hand.type == "right" && gesture.state == "start") {
+                                    inGesture = true;
+                                    inDebounce = true;
+                                    turnGesture = true;
+                                    socket.emit('gesture', { swipeRight: true });
+                                }
+                            } else { // Left
+                                gestureString += "Left";
+                                $('#status-8').css("color", "#5059C2");
+                                if (!inGesture && !turnGesture && hand.type == "right" && gesture.state == "start") {
+                                    inGesture = true;
+                                    inDebounce = true;
+                                    turnGesture = true;
+                                    socket.emit('gesture', { swipeLeft: true });
+                                }
+                            }
+                        } else { //vertical
+                            if (gesture.direction[1] > 0) { // Up
+                                gestureString += "Up";
+                                $('#status-3').css("color", "#5059C2");
+                                if (!inGesture && hand.type == "right" && gesture.state == "start") {
+                                    inGesture = true;
+                                    inDebounce = true;
+                                    socket.emit('gesture', { swipeUp: true });
+                                }
+                            } else { // Down
+                                gestureString += "Down";
+                                $('#status-9').css("color", "#5059C2");
+                                if (!inGesture && hand.type == "right" && gesture.state == "start") {
+                                    inGesture = true;
+                                    inDebounce = true;
+                                    socket.emit('gesture', { swipeDown: true });
+                                }
+                            }
+                        }
+                        break;
+                    case "screenTap":
+                        $('#status-5').css("color", "#5059C2");
+                        gestureString += "Position: " + vectorToString(gesture.position, 0);
+                        if (!inGesture && (gesture.pointableIds[0]%10 == 1) && gesture.direction[2] >= .6) {
+                            socket.emit('gesture', { screenTap: true });
+                            inDebounce = true;
+                        }
+                        break;
+                    case "keyTap":
+                        break;
+                    default:
+                        gestureString += "unkown gesture type";
                 }
-            } else {
-                gestureString += "No gestures<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>";
-
-                $('#status-1').css("border-color", "#9698A9");
-                $('#status-2').css("border-color", "#9698A9");
-                $('#status-3').css("border-color", "#9698A9");
-                $('#status-7').css("border-color", "#9698A9");
-                $('#status-8').css("border-color", "#9698A9");
-                $('#status-9').css("border-color", "#9698A9");
-
             }
-            gestureOutput.innerHTML = gestureString;
-            previousFrame = frame;
-        });
-
-        // Converting the vector to a string function.
-        function vectorToString(vector, digits) {
-            if (typeof digits === "undefined") {
-                digits = 1;
-            }
-            return "(" + vector[0].toFixed(digits) + ", "
-                    + vector[1].toFixed(digits) + ", "
-                    + vector[2].toFixed(digits) + ")";
+            gestureString += "<br />";
         }
-    </script>
+        gestureString += "</div>"
+        gestureOutput.innerHTML = gestureString;
+    } else {
+        gestureString += "No gestures</div>";
+        $('#status-1').css("color", "#5D646C");
+        $('#status-2').css("color", "#5D646C");
+        $('#status-3').css("color", "#5D646C");
+        $('#status-7').css("color", "#5D646C");
+        $('#status-8').css("color", "#5D646C");
+        $('#status-9').css("color", "#5D646C");
+    }
+    gestureOutput.innerHTML = gestureString;
+    previousFrame = frame;
+});
+
+// Converting the vector to a string function.
+function vectorToString(vector, digits) {
+    if (typeof digits === "undefined") {
+        digits = 1;
+    }
+    return "(" + vector[0].toFixed(digits) + ", "
+            + vector[1].toFixed(digits) + ", "
+            + vector[2].toFixed(digits) + ")";
+}
+
+function writeToConsole(data) {
+    var console = document.getElementById("console");
+    if (consoleString.split("&gt;").length > 100) consoleString = consoleString.substring(consoleString.indexOf("<br/>") + 5);
+    consoleString += "<br/>&gt; " + data.text;
+    if (consoleString.split("&gt;").length == 2) consoleString = consoleString.substring(consoleString.indexOf("<br/>") + 5);
+    console.innerHTML = consoleString;
+    console.scrollTop = console.scrollHeight;
+}
+
+function isPointing(hand) {
+    return (hand.indexFinger.extended && !hand.thumb.extended && !hand.middleFinger.extended && !hand.ringFinger.extended && !hand.pinky.extended);
+}
+</script>
 </body>
 </html>

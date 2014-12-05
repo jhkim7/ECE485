@@ -70,7 +70,7 @@ app.listen(8080);
 function handler(req, res) {
 
     if(req.url.indexOf('.html') != -1){ //req.url has the pathname, check if it conatins '.html'
-    fs.readFile(__dirname + '/index2.html',
+    fs.readFile(__dirname + '/index-final.html',
         function (err, data) {
             if (err) {
                 res.writeHead(500);
@@ -135,67 +135,67 @@ io.sockets.on('connection', function (socket) {
                     src.off();
                     socket.emit('console', { text: "Gesture Off." });
                 }
-                if (data.swipeRight) { // Process a right swipe
-                    socket.emit('console', {text: "Gesture: Swipe Right.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Seek Up / Next Track."});
-                    trup.on();
+                if (data.cwCircle) { // Process a cw circle
+                    socket.emit('console', { text: "Gesture: Clockwise Circle.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Volume Up." });
+                    volup.on();
                     led.on();
                 }
-                if (data.swipeLeft) { // Proess a left swipe
-                    socket.emit('console', { text: "Gesture: Swipe Left.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Seek Down / Previous Track." });
+                if (data.ccwCircle) { // Process a ccw circle
+                    socket.emit('console', { text: "Gesture: Counterclockwise Circle. Function: Volume Down." });
+                    voldn.on();
+                    led.on();
+                }
+                if (data.pointLeft) { // Process a left point
+                    socket.emit('console', { text: "Gesture: Pointing Left.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Seek Down / Previous Track." });
                     trdn.on();
+                    led.on();
+                }
+                if (data.pointRight) { // Process a right point
+                    socket.emit('console', { text: "Gesture: Pointing Right.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Seek Up / Next Track." });
+                    trup.on();
                     led.on();
                 }
                 if (data.swipeUp) { // Process an up swipe
                     if (headlightState < 2) {
                         if (headlightState < 1) {
-                            socket.emit('console', { text: "Gesture: Swipe Up.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Headlights On."});
+                            socket.emit('console', { text: "Gesture: Swipe Up.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Headlights On." });
                             low.on();
                             led.on();
                             board.analogWrite(dimmer, wiper);
                             headlightState = 1;
                         } else {
-                            socket.emit('console', { text: "Gesture: Swipe Up.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Highbeams On."});
+                            socket.emit('console', { text: "Gesture: Swipe Up.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Highbeams On." });
                             low.off();
                             high.on();
                             led.on();
                             headlightState = 2;
                         }
-                    } else socket.emit('console', { text: "Gesture: Swipe Up.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: None."});
+                    } else socket.emit('console', { text: "Gesture: Swipe Up.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: None." });
                 }
                 if (data.swipeDown) { // Process a down swipe
                     if (headlightState > 0) {
                         if (headlightState > 1) {
-                            socket.emit('console', { text: "Gesture: Swipe Down.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Highbeams Off."});
+                            socket.emit('console', { text: "Gesture: Swipe Down.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Highbeams Off." });
                             high.off();
                             low.on();
                             led.on();
                             headlightState = 1;
                         } else {
-                            socket.emit('console', { text: "Gesture: Swipe Down.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Headlights Off."});
+                            socket.emit('console', { text: "Gesture: Swipe Down.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Headlights Off." });
                             low.off();
                             led.on();
                             board.analogWrite(dimmer, 0);
                             headlightState = 0;
                         }
-                    } else socket.emit('console', { text: "Gesture: Swipe Down.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: None."});
+                    } else socket.emit('console', { text: "Gesture: Swipe Down.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: None." });
                 }
-                if (data.cwCircle) { // Process a cw circle
-                    socket.emit('console', { text: "Gesture: Clockwise Circle.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Volume Up."});
-                    volup.on();
-                    led.on();
-                }
-                if (data.ccwCircle) { // Process a ccw circle
-                    socket.emit('console', { text: "Gesture: Counterclockwise Circle. Function: Volume Down."});
-                    voldn.on();
-                    led.on();
-                }
-                if (data.turnLeft) { // Process a left point
-                    socket.emit('console', { text: "Gesture: Pointing Left.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Left Turn Signal."});
+                if (data.swipeLeft) { // Proess a left swipe
+                    socket.emit('console', { text: "Gesture: Swipe Left.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Left Turn Signal." });
                     left.on();
                     left.strobe(700);
                 }
-                if (data.turnRight) { // Process a right point
-                    socket.emit('console', { text: "Gesture: Pointing Right.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Right Turn Signal."});
+                if (data.swipeRight) { // Process a right swipe
+                    socket.emit('console', { text: "Gesture: Swipe Right.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Right Turn Signal." });
                     right.on();
                     right.strobe(700);
                 }
@@ -206,17 +206,17 @@ io.sockets.on('connection', function (socket) {
                     right.off();
                 }
                 if (data.screenTap) { // Process a screen tap
-                    socket.emit('console', { text: "Gesture: Screen Tap.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function:&nbsp;Radio Source."});
+                    socket.emit('console', { text: "Gesture: Screen Tap.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function:&nbsp;Radio Source." });
                     src.on();
                     led.on();
                 }
                 if (data.grabState) { // Process a Grab
                     if (headlightState > 0)
-                        socket.emit('console', { text: "Gesture: Grab.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Dimmer Adjust."});
+                        socket.emit('console', { text: "Gesture: Grab.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Function: Dimmer Adjust." });
                 }
                 if (data.grabOff) {
                     if (headlightState > 0)
-                        socket.emit('console', { text: "Gesture Off."});
+                        socket.emit('console', { text: "Gesture Off." });
                 }
             }
         }
@@ -227,15 +227,15 @@ io.sockets.on('connection', function (socket) {
             if (headlightState > 0) {
                 var delta = 2 * parseInt(data.dimmerChange);
                 wiper += delta;
-                if (decimal++ % 20 == 0)
-                    console.log("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dimmer Strength: "(wiper * 100 / 255));
                 if (wiper > 255) wiper = 255;
                 else if (wiper < 0) wiper = 0;
+                if (decimal++ % 20 == 0)
+                    socket.emit('console', { text: "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dimmer Strength: " + (wiper * 100 / 255).toFixed(0) + "%" });
                 board.analogWrite(dimmer, wiper);
             }
         }
     });
 
-    socket.emit('console', { text: "Connected to socket."});
+    socket.emit('console', { text: "Connected to socket." });
 
 });
