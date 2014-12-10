@@ -1,21 +1,22 @@
 * {
     /*font-family: lato;*/
 }
-
 body {
     background: #060a0c;
-    color: #3ba9df;
+    color: #26deff;
+}
+
+#header {
+    padding-top: 60px;
 }
 
 #header-title {
     font-size: 25px;
     letter-spacing: 1.5px;
     font-family: trench;
-    margin-top: 20px;
 }
 #refresh {
     font-size: 25px;
-    margin-top: 25px;
 }
 #divider-1 {
     background-color: #132730;
@@ -41,32 +42,27 @@ body {
     margin-bottom: 20px;
 }
 
-#frameData {
+/*#frameData {
     border: 1px solid #2fa0da;
     height: 75px;
     margin-bottom: 20px;
     padding: 10px;
 }
 #gestureData {
-    font-size: 9px;
+    font-size: 11px;
     border: 1px solid #2fa0da;
     margin-bottom: 20px;
     height: 250px;
-    overflow: scroll;
+    overflow: hidden;
     padding: 10px;
-}
+}*/
 #console {
     background: #0d191e;
     color: #067b96;
-    height: 250px;
-    overflow: scroll;
+    height: 470px;
+    overflow-y: scroll;
     padding: 10px;
-}
-
-.hand-data {
-    height: 160px;
-    padding-left: -10px !important;
-    font-size: 11px;
+    font-family: Consolas;
 }
 .custom-half {
     width: 50%;
@@ -76,6 +72,7 @@ body {
 
 .gesture-title {
     color: #5d5d5d;
+    font-size: 20px;
 }
 
 .media-container {
@@ -87,8 +84,6 @@ body {
     float: left;
     position: relative;
 }
-
-
 .status {
     border: 3px solid;
     height: 40px;
@@ -97,10 +92,10 @@ body {
 .car-icon {
     color: #5D646C;
     text-align: center;
-    font-size: 30px;
+    font-size: 50px;
 }
 .car-label {
-    font-size: 16px;
+    font-size: 24px;
     text-align: center;
     color: #5D646C;
     margin-top:10px;
@@ -108,7 +103,7 @@ body {
 .media-icon {
     color: #5D646C;
     text-align: center;
-    font-size: 30px;
+    font-size: 50px;
     margin-bottom: 35px;
     line-height: 20px;
 }
@@ -123,16 +118,6 @@ body {
     padding-right: 20px;
 }
 #status-5 {
-    font-size: 20px;
-    line-height: 30px;
-}
-
-.footer {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding-right: 30px;
-    text-align: right;
     font-size: 30px;
-    font-family: trench;
+    line-height: 30px;
 }

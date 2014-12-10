@@ -24,8 +24,8 @@
         <div id="header-title" class="col-lg-11">
             Project 4: Vehicle Dashboard Gesture Control
         </div>
-        <div class="col-lg-1">
-            <i id="refresh" class="fa fa-refresh" onclick="window.location.reload()"></i>
+        <div class="col-lg-1" id="refresh">
+            <i class="fa fa-refresh" onclick="window.location.reload()"></i>
         </div>
         <div class="col-lg-12" id="divider-1"></div>
     </div>
@@ -33,18 +33,20 @@
 
 
     <div class="data-container col-lg-4">
-        <div class="data-title">FRAME DATA</div>
-        <div class="pointable data" id="frameData"></div>
-
-
-        <div class="data-title">GESTURE DATA</div>
-        <div class="data" id="gestureData"></div>
-        <div class="data-border">
-            <div class="data-title">ARDUINO CONSOLE</div>
-            <div id="console"></div>
+        <div class="data-border col-lg-12">
+            <div class="data-title">FRAME DATA</div>
+            <div class="pointable data" id="frameData"></div>
         </div>
-
+        <div class="data-border col-lg-12">
+            <div class="data-title">HAND DATA</div>
+            <div class="data" id="handData"></div>
+        </div>
+        <div class="data-border col-lg-12">
+            <div class="data-title">FINGER DATA</div>
+            <div class="data" id="pointableData"></div>
+        </div>
     </div>
+        
 
     <div class="col-lg-4 dashboard">
 
@@ -58,7 +60,7 @@
                     <i class="fa fa-backward pull-right"></i>
                 </div>
                 <div class="media-icon col-lg-4 " id="status-5">
-                    SOURCE
+                    SRC
                 </div>
                 <div class="media-icon col-lg-4" id="status-4">
                     <!--Point Right:<br />Seek Up/Next Track-->
@@ -78,18 +80,18 @@
         <div class="light-container">
             <div class="gesture-title">CAR LIGHTS</div>
 
-            <div class="light-icons">
-                <div class="car-icon col-lg-6" id="status-8">
-                    <i class="fa fa-arrow-left"></i>
+            <iv class="light-icons">
+                <div class="col-lg-12 car-icon" id="status-3"><i class="fa fa-angle-double-up"></i></div>
+                <div class="col-lg-4 car-icon" id="status-8">
+                    <i class="fa fa-angle-double-left pull-right"></i>
                 </div>
-                <div class="car-icon col-lg-6" id="status-2">
-                    <i class="fa fa-arrow-right"></i>
+                <div class="car-label col-lg-4" id="status-11">Dimmer Control</div>
+                <div class="car-icon col-lg-4" id="status-2">
+                    <i class="fa fa-angle-double-right pull-left"></i>
                 </div>
+                <div class="col-lg-12 car-icon" id="status-9"><i class="fa fa-angle-double-down"></i></div>
 
-                <div class="car-label col-lg-6" id="status-9">Headlights Low/Off</div>
-                <div class="car-label col-lg-6" id="status-3">Headlights On/High</div>
-
-                <div class="car-label col-lg-12" id="status-11">Dimmer Control</div>
+                
                 <div class="car-label col-lg-12" id="status-12">N.C. State<br />Go Wolfpack!</div>
 
                 <div id="sound">
@@ -98,24 +100,22 @@
                         Your browser doesn't support this audio format.
                     </audio>
                 </div>
-            </div>
+            </>
             
         </div>
 
     </div>
 
     <div class="data-container col-lg-4">
-        <div class="data-border col-lg-12">
-            <div class="data-title">HAND DATA</div>
-            <div class="data" id="handData"></div>
+        <div class="data-border">
+            <div class="data-title">GESTURE DATA</div>
+            <div class="data" id="gestureData"></div>
         </div>
-        <div class="data-border col-lg-12">
-            <div class="data-title">FINGER DATA</div>
-            <div class="data" id="pointableData"></div>
+        <div class="data-border">
+            <div class="data-title">ARDUINO CONSOLE</div>
+            <div id="console"></div>
         </div>
-    </div>
-    <div class="footer">
-        NC STATE UNIVERSITY
+
     </div>
 
 
@@ -269,7 +269,7 @@ Leap.loop(controllerOptions, function (frame) {
                 // Send a message to the socket when grab triggered.
                 if (hand.grabStrength == 1) {
                     //handString += "<div style='color:red'>" + "The grab strength is greater than 0.8" + "</div>";
-                    $("#status-11").css("color", "#3ba9df");
+                    $("#status-11").css("color", "#787cd4");
                     if (inGrabState) {
                         if (hand.type == "right" && (Math.abs(translation[0]) < 1 || Math.abs(translation[2]) < 1))
                             socket.emit('dimmer', { dimmerChange: translation[1].toFixed(0) });
@@ -290,7 +290,7 @@ Leap.loop(controllerOptions, function (frame) {
             handString += "</div></div>";
         }
     } else {
-        handString += "<div class=''><div class='pointable hand-data'>No Hands</div></div>";
+        handString += "<div class=''><div class='pointable hand-data'>No Hands<br/><br/><br/><br/><br/><br/><br/><br/><br/></div></div>";
         $("#status-11").css("border-color", "#3ba9df");
     }
     handOutput.innerHTML = handString;
@@ -309,19 +309,19 @@ Leap.loop(controllerOptions, function (frame) {
                 pointableString += "Direction: " + vectorToString(pointable.direction, 2) + "<br />";
                 pointableString += "Tip Position: " + vectorToString(pointable.tipPosition, 0) + "<br />";
                 if (pointable.extended)
-                    pointableString += "Is Extended<br/>";
+                    pointableString += "Is Extended<br/><br/>";
                 else
-                    pointableString += "Not Extended<br/>"
+                    pointableString += "Not Extended<br/><br/>"
             } else {
-                pointableString += "<br/><br/><br/><br/><br/>";
+                pointableString += "<br/><br/><br/><br/><br/><br/>";
             }
             pointableString += "</div>";
             if (i == 4) pointableString += "</div><div class='custom-half'>";
         }
         pointableString += "</div>";
     } else {
-        pointableString += "<div class='pointable'>No Fingers<br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div></div>"
-                + "<div class='custom-half'><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/></div></div>";
+        pointableString += "<div class='pointable'>No Fingers<br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div>"
+                + "<div class='custom-half'><div class='pointable'><br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div><div class='pointable'><br/><br/><br/><br/><br/><br/></div></div>";
     }
     pointableOutput.innerHTML = pointableString;
 
@@ -336,8 +336,8 @@ Leap.loop(controllerOptions, function (frame) {
                         + "Type: " + gesture.type + ", "
                         + "State: " + gesture.state + ", "
                         + "Hand: " + gesture.handIds.join(", ") + ", "
-                        + "Finger: " + gesture.pointableIds.join(", ") + ", "
-                        + "Duration: " + (gesture.duration/1000000).toFixed(2) + " s, ";
+                        + "Finger: " + gesture.pointableIds.join(", ") + ", ";
+//                        + "Duration: " + (gesture.duration/1000000).toFixed(2) + " s, ";
 
                 switch (gesture.type) {
                     case "circle":
@@ -357,7 +357,7 @@ Leap.loop(controllerOptions, function (frame) {
                         // Send message to the socket depending on the direction of the circle and circle counts.
                         if (clockwise) {
                             gestureString += "CW, ";
-                            $('#status-1').css("color", "#5059C2");
+                            $('#status-1').css("color", "#3ba9df");
                             if (!inGesture) {
                                 if (gesture.progress >= 1 && gesture.progress < 2) {
                                     inGesture = true;
@@ -367,7 +367,7 @@ Leap.loop(controllerOptions, function (frame) {
                             }
                         } else {
                             gestureString += "CCW, ";
-                            $('#status-7').css("color", "#5059C2");
+                            $('#status-7').css("color", "#3ba9df");
                             if (!inGesture) {
                                 if (gesture.progress >= 1 && gesture.progress < 2) {
                                     inGesture = true;
@@ -386,7 +386,7 @@ Leap.loop(controllerOptions, function (frame) {
                         if (isHorizontal) {
                             if (gesture.direction[0] > 0) { // Right
                                 gestureString += "Right";
-                                $('#status-2').css("color", "#5059C2");
+                                $('#status-2').css("color", "#787cd4");
                                 if (!inDebounce  && !turnGesture && hand.type == "right" && gesture.state == "start") {
                                     inGesture = true;
                                     inDebounce = true;
@@ -395,7 +395,7 @@ Leap.loop(controllerOptions, function (frame) {
                                 }
                             } else { // Left
                                 gestureString += "Left";
-                                $('#status-8').css("color", "#5059C2");
+                                $('#status-8').css("color", "#787cd4");
                                 if (!inGesture && !turnGesture && hand.type == "right" && gesture.state == "start") {
                                     inGesture = true;
                                     inDebounce = true;
@@ -406,25 +406,27 @@ Leap.loop(controllerOptions, function (frame) {
                         } else { //vertical
                             if (gesture.direction[1] > 0) { // Up
                                 gestureString += "Up";
-                                $('#status-3').css("color", "#5059C2");
+                                $('#status-3').css("color", "#787cd4");
                                 if (!inGesture && hand.type == "right" && gesture.state == "start") {
                                     inGesture = true;
                                     inDebounce = true;
+                                    timer = 15;
                                     socket.emit('gesture', { swipeUp: true });
                                 }
                             } else { // Down
                                 gestureString += "Down";
-                                $('#status-9').css("color", "#5059C2");
+                                $('#status-9').css("color", "#787cd4");
                                 if (!inGesture && hand.type == "right" && gesture.state == "start") {
                                     inGesture = true;
                                     inDebounce = true;
+                                    timer = 15;
                                     socket.emit('gesture', { swipeDown: true });
                                 }
                             }
                         }
                         break;
                     case "screenTap":
-                        $('#status-5').css("color", "#5059C2");
+                        $('#status-5').css("color", "#3ba9df");
                         gestureString += "Position: " + vectorToString(gesture.position, 0);
                         if (!inGesture && (gesture.pointableIds[0]%10 == 1) && gesture.direction[2] >= .6) {
                             socket.emit('gesture', { screenTap: true });
@@ -442,7 +444,7 @@ Leap.loop(controllerOptions, function (frame) {
         gestureString += "</div>"
         gestureOutput.innerHTML = gestureString;
     } else {
-        gestureString += "No gestures</div>";
+        gestureString += "No gestures<br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /></div>";
         $('#status-1').css("color", "#5D646C");
         $('#status-2').css("color", "#5D646C");
         $('#status-3').css("color", "#5D646C");

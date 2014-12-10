@@ -70,7 +70,7 @@ app.listen(8080);
 function handler(req, res) {
 
     if(req.url.indexOf('.html') != -1){ //req.url has the pathname, check if it conatins '.html'
-    fs.readFile(__dirname + '/index-final.html',
+    fs.readFile(__dirname + '/index.html',
         function (err, data) {
             if (err) {
                 res.writeHead(500);
@@ -112,6 +112,13 @@ function handler(req, res) {
         fs.readFile(__dirname + "/" + req.url, function (err, data) {
             if (err) console.log(err);
             res.writeHead(200, { 'Content-Type': 'image/png' });
+            res.write(data);
+            res.end();
+        });
+    } else if (req.url.indexOf('.woff') != -1) {
+        fs.readFile(__dirname + "/" + req.url.substring(0, req.url.indexOf('?')), function (err, data) {
+            if (err) console.log(err);
+            res.writeHead(200, { 'Content-Type': 'application/x-font-woff' });
             res.write(data);
             res.end();
         });
