@@ -1,6 +1,7 @@
 * {
     /*font-family: lato;*/
 }
+
 body {
     background: #060a0c;
     color: #3ba9df;
@@ -29,7 +30,7 @@ body {
 
 }
 .data {
-    color: #024153;
+    color: #02687b;
 }
 .data-border {
     border-top: 2px solid #00415a;
@@ -124,4 +125,14 @@ body {
 #status-5 {
     font-size: 20px;
     line-height: 30px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding-right: 30px;
+    text-align: right;
+    font-size: 30px;
+    font-family: trench;
 }
